@@ -1,0 +1,46 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id        String     @id @default(cuid()) @map("_id")
+  name      String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  documents Document[]
+}
+
+model InspiringPerson {
+  id        String     @id @default(cuid()) @map("_id") 
+  name      String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  documents Document[]
+}
+
+model Executor {
+  id        String     @id @default(cuid()) @map("_id") 
+  name      String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  documents Document[]
+}
+
+model Document {
+  id                String          @id @default(cuid()) @map("_id") 
+  categoryId        String          
+  inspiringPersonId String          
+  executorId        String          
+  category          Category        @relation(fields: [categoryId], references: [id])
+  inspiringPerson   InspiringPerson @relation(fields: [inspiringPersonId], references: [id])
+  executor          Executor        @relation(fields: [executorId], references: [id])
+  indicatorName     String
+  quantity          String
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+}
