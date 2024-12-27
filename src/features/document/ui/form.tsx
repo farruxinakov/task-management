@@ -40,14 +40,14 @@ import {
 interface DocumentFormProps {
   document: Document | null;
   categories: Category[];
-  inspiringPersons: InspiringPerson[];
+  inspiringPeople: InspiringPerson[];
   executors: Executor[];
 }
 
 export function DocumentForm({
   document,
   categories,
-  inspiringPersons,
+  inspiringPeople,
   executors,
 }: DocumentFormProps) {
   const router = useRouter();
@@ -69,7 +69,6 @@ export function DocumentForm({
   });
 
   async function onSubmit(values: DocumentSchema) {
-    console.log(values);
     if (document) {
       await updateDocument(values);
     } else {
@@ -132,8 +131,8 @@ export function DocumentForm({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {inspiringPersons.length > 0 ? (
-                      inspiringPersons.map((inspiringPerson) => (
+                    {inspiringPeople.length > 0 ? (
+                      inspiringPeople.map((inspiringPerson) => (
                         <SelectItem
                           key={inspiringPerson.id}
                           value={inspiringPerson.id}
