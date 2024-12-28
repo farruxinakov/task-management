@@ -14,7 +14,7 @@ export const getDocument = async (id: string) => {
     await axios.get<{
       document: Document;
       categories: Category[];
-      inspiringPeople: InspiringPerson[];
+      inspiringPersons: InspiringPerson[];
       executors: Executor[];
     }>(`/api/documents/${id}`)
   ).data;

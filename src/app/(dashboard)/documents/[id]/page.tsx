@@ -39,7 +39,7 @@ export default function DocumentPage({ params }: { params: Params }) {
             <DocumentForm
               document={data?.document ?? null}
               categories={data?.categories ?? []}
-              inspiringPeople={data?.inspiringPeople ?? []}
+              inspiringPersons={data?.inspiringPersons ?? []}
               executors={data?.executors ?? []}
             />
           </div>

@@ -40,14 +40,14 @@ import {
 interface DocumentFormProps {
   document: Document | null;
   categories: Category[];
-  inspiringPeople: InspiringPerson[];
+  inspiringPersons: InspiringPerson[];
   executors: Executor[];
 }
 
 export function DocumentForm({
   document,
   categories,
-  inspiringPeople,
+  inspiringPersons,
   executors,
 }: DocumentFormProps) {
   const router = useRouter();
@@ -131,8 +131,8 @@ export function DocumentForm({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {inspiringPeople.length > 0 ? (
-                      inspiringPeople.map((inspiringPerson) => (
+                    {inspiringPersons.length > 0 ? (
+                      inspiringPersons.map((inspiringPerson) => (
                         <SelectItem
                           key={inspiringPerson.id}
                           value={inspiringPerson.id}

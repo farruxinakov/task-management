@@ -14,13 +14,13 @@ export async function GET(
     const document = await prisma.document.findUnique({ where: { id } });
 
     const categories = await prisma.category.findMany();
-    const inspiringPeople = await prisma.inspiringPerson.findMany();
+    const inspiringPersons = await prisma.inspiringPerson.findMany();
     const executors = await prisma.executor.findMany();
 
     return NextResponse.json({
       document,
       categories,
-      inspiringPeople,
+      inspiringPersons,
       executors,
     });
   } catch (error) {
