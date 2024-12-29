@@ -47,7 +47,13 @@ export async function PATCH(
     } = await request.json();
 
     const existingDocument = await prisma.document.findFirst({
-      where: { indicatorName },
+      where: {
+        categoryId,
+        inspiringPersonId,
+        executorId,
+        indicatorName,
+        quantity,
+      },
     });
 
     if (existingDocument) {
