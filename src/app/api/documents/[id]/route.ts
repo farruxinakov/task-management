@@ -46,8 +46,6 @@ export async function PATCH(
       quantity,
     } = await request.json();
 
-    const today = new Date();
-
     const existingDocument = await prisma.document.findFirst({
       where: {
         categoryId,
@@ -55,30 +53,12 @@ export async function PATCH(
         executorId,
         indicatorName,
         quantity,
-        createdAt: {
-          gte: new Date(
-            today.getFullYear(),
-            today.getMonth(),
-            today.getDate(),
-            0,
-            0,
-            0,
-          ),
-          lt: new Date(
-            today.getFullYear(),
-            today.getMonth(),
-            today.getDate(),
-            23,
-            59,
-            59,
-          ),
-        },
       },
     });
 
     if (existingDocument) {
       return NextResponse.json(
-        { error: "Документ уже существует в этот день" },
+        { error: "Индикатор уже существует" },
         { status: 409 },
       );
     }
