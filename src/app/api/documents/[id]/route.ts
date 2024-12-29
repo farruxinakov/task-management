@@ -53,6 +53,12 @@ export async function PATCH(
         executorId,
         indicatorName,
         quantity,
+        createdAt: {
+          gte: new Date(new Date().setDate(new Date().getDate() - 1)),
+        },
+        updatedAt: {
+          gte: new Date(new Date().setDate(new Date().getDate() - 1)),
+        },
       },
     });
 
