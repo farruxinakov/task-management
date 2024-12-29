@@ -54,17 +54,15 @@ export async function PATCH(
         indicatorName,
         quantity,
         createdAt: {
-          gte: new Date(new Date().setDate(new Date().getDate() - 1)),
-        },
-        updatedAt: {
-          gte: new Date(new Date().setDate(new Date().getDate() - 1)),
+          gte: new Date(new Date().setHours(0, 0, 0, 0)),
+          lt: new Date(new Date().setHours(23, 59, 59, 999)),
         },
       },
     });
 
     if (existingDocument) {
       return NextResponse.json(
-        { error: "Индикатор уже существует" },
+        { error: "Документ уже существует" },
         { status: 409 },
       );
     }
