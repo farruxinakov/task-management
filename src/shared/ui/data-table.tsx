@@ -11,7 +11,11 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { parse, isSameMonth } from "date-fns";
 
+import { DatePicker } from "@/features/reports/ui/date-picker";
+
+import { cn } from "@/shared/lib/utils";
 import { Input } from "@/shared/ui/input";
 import {
   Select,
@@ -38,12 +42,16 @@ interface DataTableProps<TData, TValue> {
     title: string;
     options: { label: string; value: string }[] | undefined;
   }[];
+  selectedDate?: Date;
+  setSelectedDate?: (date: Date) => void;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   filterableColumns = [],
+  selectedDate,
+  setSelectedDate,
 }: DataTableProps<TData, TValue>) {
   const [globalFilter, setGlobalFilter] = React.useState("");
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -51,8 +59,18 @@ export function DataTable<TData, TValue>({
   );
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
+  const filteredData = React.useMemo(() => {
+    if (!selectedDate) return data;
+
+    return data.filter((item: any) => {
+      const itemDate = parse(item.createdAt, "dd.MM.yyyy", new Date());
+
+      return isSameMonth(itemDate, selectedDate);
+    });
+  }, [data, selectedDate]);
+
   const table = useReactTable({
-    data,
+    data: filteredData,
     columns,
     getCoreRowModel: getCoreRowModel(),
     onGlobalFilterChange: setGlobalFilter,
@@ -77,7 +95,12 @@ export function DataTable<TData, TValue>({
         placeholder="Поиск"
       />
       {filterableColumns.length > 0 && (
-        <div className="grid grid-cols-1 items-center gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div
+          className={cn(
+            "grid grid-cols-1 items-center gap-6 md:grid-cols-2 lg:grid-cols-3",
+            selectedDate && setSelectedDate && "lg:grid-cols-4",
+          )}
+        >
           {filterableColumns.map(({ id, title, options }) => (
             <Select
               key={id}
@@ -118,6 +141,13 @@ export function DataTable<TData, TValue>({
               </SelectContent>
             </Select>
           ))}
+
+          {selectedDate && setSelectedDate && (
+            <DatePicker
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+            />
+          )}
         </div>
       )}
       <div className="rounded-md border">
@@ -148,7 +178,12 @@ export function DataTable<TData, TValue>({
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell
+                      key={cell.id}
+                      className={cn(
+                        selectedDate && setSelectedDate && "text-center",
+                      )}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),

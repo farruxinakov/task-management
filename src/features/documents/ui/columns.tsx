@@ -30,7 +30,7 @@ export const documentsColumns: ColumnDef<DocumentColumn>[] = [
   {
     accessorKey: "inspiringPerson",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Вдохновляющий человек" />
+      <DataTableColumnHeader column={column} title="Вдохновляющая личность" />
     ),
   },
   {

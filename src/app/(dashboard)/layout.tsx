@@ -12,7 +12,7 @@ export default function DashboardLayout({ children }: PropsWithChildren) {
     <SidebarProvider className="grid grid-cols-1 md:grid-cols-[auto_1fr]">
       <Aside />
 
-      <div className="flex min-h-dvh flex-col">
+      <div className="flex min-h-svh flex-col">
         <Header />
         <Main>{children}</Main>
         <Footer />
