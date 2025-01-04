@@ -8,9 +8,9 @@ import { LoaderIcon } from "lucide-react";
 
 import { useGetDocuments } from "@/features/documents/model/queries";
 import { reportsColumns } from "@/features/reports/ui/columns";
+import { DataTable } from "@/features/reports/ui/data-table";
 
 import { Container } from "@/shared/custom/container";
-import { DataTable } from "@/shared/ui/data-table";
 
 export default function ReportsPage() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());

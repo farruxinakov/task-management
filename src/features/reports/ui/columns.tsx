@@ -8,8 +8,8 @@ export type ReportColumn = {
   inspiringPerson: string;
   executor: string;
   indicatorName: string;
-  quantity: string;
-  createdAt: string;
+  quantity: string | string[];
+  createdAt: string | string[];
   updatedAt: string;
 };
 
@@ -44,19 +44,25 @@ export const reportsColumns = (
       accessorKey: `day${index + 1}`,
       header: `${index + 1}`,
       cell: ({ row }: { row: Row<ReportColumn> }) => {
-        const createdDate = parse(
-          row.original.createdAt,
-          "dd.MM.yyyy",
-          new Date(),
-        );
+        if (Array.isArray(row.original.createdAt)) {
+          const dates = row.original.createdAt;
+          const quantities = row.original.quantity;
 
-        if (!isSameMonth(createdDate, selectedDate)) {
+          for (let i = 0; i < dates.length; i++) {
+            const createdDate = parse(dates[i], "dd.MM.yyyy", new Date());
+
+            if (
+              isSameMonth(createdDate, selectedDate) &&
+              createdDate.getDate() === index + 1
+            ) {
+              return quantities[i];
+            }
+          }
+
           return "";
         }
 
-        const dayOfMonth = createdDate.getDate();
-
-        return dayOfMonth === index + 1 ? row.original.quantity : "";
+        return "";
       },
     })),
   ];
