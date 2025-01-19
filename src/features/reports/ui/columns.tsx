@@ -65,5 +65,48 @@ export const reportsColumns = (
         return "";
       },
     })),
+    {
+      accessorKey: "total",
+      header: "Итого",
+      cell: ({ row }: { row: Row<ReportColumn> }) => {
+        if (Array.isArray(row.original.quantity)) {
+          const quantities = row.original.quantity.filter((q) => q);
+
+          let totalMinutes = 0;
+          let totalNumbers = 0;
+
+          quantities.forEach((qty) => {
+            if (typeof qty === "string") {
+              if (qty.includes(":")) {
+                const [hours, minutes] = qty.split(":").map(Number);
+
+                totalMinutes += hours * 60 + minutes;
+              } else {
+                totalNumbers += Number(qty) || 0;
+              }
+            }
+          });
+
+          if (totalMinutes > 0) {
+            const hours = Math.floor(totalMinutes / 60);
+            const minutes = totalMinutes % 60;
+
+            return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
+          }
+
+          return totalNumbers.toString();
+        }
+
+        if (typeof row.original.quantity === "string") {
+          if (row.original.quantity.includes(":")) {
+            return row.original.quantity;
+          }
+
+          return row.original.quantity;
+        }
+
+        return "0";
+      },
+    },
   ];
 };

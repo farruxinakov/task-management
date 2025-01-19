@@ -85,12 +85,24 @@ export function DataTable<TData, TValue>({
 
     const processed = processData(data);
 
-    return processed.filter((item: any) => {
-      return item.createdAt.some((date: string) => {
+    return processed.map((item: any) => {
+      const filteredDates: string[] = [];
+      const filteredQuantities: string[] = [];
+
+      item.createdAt.forEach((date: string, index: number) => {
         const itemDate = parse(date, "dd.MM.yyyy", new Date());
 
-        return isSameMonth(itemDate, selectedDate);
+        if (isSameMonth(itemDate, selectedDate)) {
+          filteredDates.push(date);
+          filteredQuantities.push(item.quantity[index]);
+        }
       });
+
+      return {
+        ...item,
+        createdAt: filteredDates,
+        quantity: filteredQuantities,
+      };
     });
   }, [data, selectedDate, processData]);
 
